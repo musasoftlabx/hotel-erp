@@ -1,15 +1,21 @@
 import got from "got";
 
-export async function GET() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
-  const a = res.json();
-  console.log(a);
-  return Response.json(a);
+//process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
-  // const res = got("https://jsonplaceholder.typicode.com/todos").json();
-  // return Response.json(res);
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const res = await got("https://jsonplaceholder.typicode.com/todos", {
+    https: { rejectUnauthorized: false },
+  }).json();
+  // const users = await got("https://dealerportal.safaricom.co.ke/api/users", {
+  //   https: { rejectUnauthorized: false },
+  // }).json();
 
-  //return Response.json({ user: 1 });
+  //console.log(res);
+  return Response.json(res);
+  //return Response.json(users);
 }
 
 export async function POST(request: Request) {
