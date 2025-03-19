@@ -180,8 +180,7 @@ export default function AppDrawer({ children }: { children: React.ReactNode }) {
             );
           },
           toolbarActions: () => (
-            <Stack>
-              {" "}
+            <Stack direction="row" alignItems="center">
               <ThemeSwitcher />
             </Stack>
           ),

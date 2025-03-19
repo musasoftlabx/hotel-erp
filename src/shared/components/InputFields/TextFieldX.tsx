@@ -44,16 +44,18 @@ const StyledTextField = styled(
   // eslint-disable-next-line react/display-name
   forwardRef((props: TExtendedProps, ref) => {
     return (
-      <Grid display="flex" size={props?.columnspan?.xs || 12} sx={{ p: 1 }}>
+      <Grid size={props?.columnspan?.xs || 12} p={1}>
         <TextField
           inputRef={ref}
           variant="filled"
           fullWidth
           size="small"
           placeholder={props.placeholder || props.label}
-          InputProps={
-            {
-              disableUnderline: true,
+          slotProps={{
+            ...props.slotProps,
+            input: {
+              ...props.slotProps?.input,
+              //disableUnderline: true,
               startAdornment: props.prefixcon && (
                 <InputAdornment
                   position="start"
@@ -63,11 +65,11 @@ const StyledTextField = styled(
                         ? `${props.rows! * -14.5}px !important`
                         : `${props.rows! * -20.5}px !important`
                       : props.value
-                      ? "18px !important"
-                      : typeof props.prefixcon === "string" &&
-                        props.value == "0"
-                      ? "17px !important"
-                      : "0px !important",
+                        ? "18px !important"
+                        : typeof props.prefixcon === "string" &&
+                            props.value == "0"
+                          ? "17px !important"
+                          : "0px !important",
                     color: props.error ? "#d3302f" : "",
                   }}
                 >
@@ -79,10 +81,8 @@ const StyledTextField = styled(
                   {props.suffixcon as string}
                 </InputAdornment>
               ),
-            } as Partial<OutlinedInputProps>
-          }
-          SelectProps={
-            props.select
+            } as Partial<OutlinedInputProps>,
+            select: props.select
               ? {
                   MenuProps: {
                     sx: {
@@ -123,9 +123,8 @@ const StyledTextField = styled(
                     },
                   },
                 }
-              : {}
-          }
-          {...props}
+              : {},
+          }}
         />
       </Grid>
     );

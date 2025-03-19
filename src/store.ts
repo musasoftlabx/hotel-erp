@@ -9,7 +9,7 @@ import hexToRGB from "./utils/hexToRGB";
 import { devtools, persist } from "zustand/middleware";
 
 export const defaultPrimaryColor = "#45a65b";
-const defaultFont = "Futura";
+const defaultFont = "Rubik";
 
 interface useAlertStore {
   isOpen: boolean;
@@ -185,53 +185,6 @@ export const useMinistoreStore = create<useMinistoreStore>((set) => ({
         })
         .catch(() => set({ ministore: false }));
     } else set({ ministore: false });
-  },
-}));
-
-export const useBalanceStore = create<useBalanceStore>((set) => ({
-  balance: 0,
-  invoice: 0,
-  loading: false,
-  setter: (balance, invoice) => {
-    set({ balance, invoice });
-    localStorage.setItem("balance", balance.toString());
-    localStorage.setItem("invoice", invoice.toString());
-  },
-  getter: () => {
-    const balance = Number(localStorage.getItem("balance"));
-    const invoice = Number(localStorage.getItem("invoice"));
-
-    if (balance && invoice) set({ balance, invoice });
-    else {
-      set({ loading: true });
-      axios.get(`balances`).then(({ data: { balance, invoice } }) => {
-        if (balance) {
-          set({ balance, invoice, loading: false });
-          localStorage.setItem("balance", balance);
-          localStorage.setItem("invoice", invoice);
-        }
-      });
-    }
-  },
-}));
-
-export const useCartStore = create<useCartStore>((set) => ({
-  cartCount: 0,
-  setter: (cartCount) => {
-    set({ cartCount });
-    localStorage.setItem("cartCount", cartCount.toString());
-  },
-  getter: () => {
-    const cartCount = Number(localStorage.getItem("cartCount"));
-
-    if (cartCount) set({ cartCount });
-    else
-      axios.get(`cart/count`).then(({ data }) => {
-        if (data) {
-          set({ cartCount: data });
-          localStorage.setItem("cartCount", data);
-        }
-      });
   },
 }));
 

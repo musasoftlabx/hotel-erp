@@ -18,7 +18,11 @@ export async function GET(req: NextRequest) {
   ).json();
 
   if (view === "display")
-    return Response.json({ count: dataset.length, dataset });
+    return Response.json({
+      count: dataset.length,
+      dataset,
+      roles: ["a", "b", "c"],
+    });
 
   if (view === "export")
     return Response.json({ count: dataset.length, dataset });

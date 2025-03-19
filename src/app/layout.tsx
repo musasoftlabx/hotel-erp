@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
+
+//import "./globals.css";
+
+import { ThemeProvider } from "next-themes";
 
 // * NPM
 import QueryProvider from "@/shared/QueryProvider";
@@ -22,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <>
+          <QueryProvider>{children}</QueryProvider>
+        </>
       </body>
     </html>
   );

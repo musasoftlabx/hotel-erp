@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const string = Yup.string().required("Required.");
+export const yupString = Yup.string().required("Required.");
 
 export const stringMax = (max: number) =>
   Yup.string().max(max, "Max of ${max} chars.").required("Required.");
@@ -30,7 +30,7 @@ export const yupPassword = Yup.string()
   )
   .required("Required.");
 
-export const phone = Yup.string()
+export const yupPhoneNumber = Yup.string()
   .min(10, "Must be ${min} chars.")
   .test({
     name: "startsWith",
@@ -40,7 +40,7 @@ export const phone = Yup.string()
   })
   .required("Required.");
 
-export const email = Yup.string()
+export const yupEmailAddress = Yup.string()
   .email("Invalid email")
   .max(50, "Max of 50 chars")
   .required("Required.");

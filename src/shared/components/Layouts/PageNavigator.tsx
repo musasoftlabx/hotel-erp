@@ -24,8 +24,8 @@ import { BsSearch } from "react-icons/bs";
 export interface iNavigator {
   dataset?: any;
   filtered?: any;
-  name: string;
-  alt?: string;
+  heading: string;
+  subheading?: string;
   count: number;
   hasSearch?: boolean | false;
   canRefresh?: boolean | false;
@@ -38,8 +38,8 @@ export interface iNavigator {
 }
 
 export default function PageNavigator({
-  name,
-  alt,
+  heading,
+  subheading,
   dataset,
   count,
   filtered,
@@ -60,17 +60,18 @@ export default function PageNavigator({
       <Fab
         size="medium"
         sx={(theme) => ({
-          mr: 2,
+          border: theme.palette.mode === "light" ? "unset" : "1px solid #fff",
           background:
             theme.palette.mode === "light"
               ? "linear-gradient(145deg, #c4e0c1, #f0f0f0)"
-              : "transparent",
-          boxShadow:
-            theme.palette.mode === "light"
-              ? `6px 6px 12px #a8a8a8, -6px -6px 12px #ffffff`
-              : "unset",
-          border: theme.palette.mode === "light" ? "unset" : "1px double #fff",
-          color: theme.palette.mode === "light" ? "#000" : "#fff",
+              : //theme.palette.primary
+                "transparent",
+          // boxShadow:
+          //   theme.palette.mode === "light"
+          //     ? `6px 6px 12px #a8a8a8, -6px -6px 12px #ffffff`
+          //     : "unset",
+          //color: theme.palette.mode === "light" ? "#000" : "#fff",
+          mr: 2,
         })}
       >
         <MdArrowBack
@@ -80,9 +81,18 @@ export default function PageNavigator({
         />
       </Fab>
 
+      {canRefresh && (
+        <Fab size="medium" color="primary" sx={{ mr: 2 }}>
+          <MdRefresh
+            style={{ height: 25, width: 25 }}
+            onClick={() => queryClient.refetchQueries({ queryKey })}
+          />
+        </Fab>
+      )}
+
       <Grid>
         <Typography variant="h6" fontFamily="Rubik" fontSize={20}>
-          {`${startCase(name)}`}
+          {`${startCase(heading)}`}
         </Typography>
 
         {count > 0 && (
@@ -94,25 +104,16 @@ export default function PageNavigator({
               duration={2}
               style={{ fontFamily: "Rubik", fontSize: 20, marginTop: -3 }}
             />
-            {` ${alt ? alt : name}`}
+            {` ${subheading ? subheading : heading}`}
           </Typography>
         )}
       </Grid>
 
-      {/* {canRefresh && (
-          <Fab color="primary" sx={{ mr: 2 }}>
-            <MdRefresh
-              style={{ height: 25, width: 25 }}
-              onClick={() => queryClient.refetchQueries(queryKey)}
-            />
-          </Fab>
-        )} */}
-
       {hasSearch && dataset?.length >= lengthToSearch && (
         <Grid size={12}>
           <TextFieldX
-            label={`Search for ${name}`}
-            placeholder={`Search for ${name}`}
+            label={`Search for ${heading}`}
+            placeholder={`Search for ${heading}`}
             prefixcon={<BsSearch size={20} />}
             suffixcon={
               searchQuery &&

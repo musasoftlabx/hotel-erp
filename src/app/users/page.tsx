@@ -7,9 +7,12 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 // * NPM
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 // * MUI
+import { Box, Button, IconButton, Stack } from "@mui/material";
+import { green } from "@mui/material/colors";
 import {
   DataGridPro,
   GRID_CHECKBOX_SELECTION_COL_DEF,
@@ -17,60 +20,57 @@ import {
   GridRowModel,
   useGridApiRef,
 } from "@mui/x-data-grid-pro";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  IconButton,
-  Stack,
-  ThemeOptions,
-  Typography,
-} from "@mui/material";
-import { motion } from "framer-motion";
 
-import { InferType, object } from "yup";
-import { useMutation, useQuery } from "@tanstack/react-query";
-
-import { yupUsername, yupPassword } from "@/utils/yupReusables";
+// * Hooks
 import useCustomDataGrid from "@/hooks/useCustomDataGrid";
-import {
-  DataGridSlotProps,
-  DataGridSlots,
-} from "@/shared/components/DataTable/DataGridSlots";
-import { DataGridStyles } from "@/shared/components/DataTable/DataGridStyles";
+import useJWT from "@/hooks/useJWT";
 
-import { FaUsersCog } from "react-icons/fa";
-import DataGridPagination from "@/shared/components/DataTable/DataGridPagination";
+// * Store
+import { useConfirmStore } from "@/store";
+
+// * Components
+import { DataGridStyles } from "@/shared/components/DataTable/DataGridStyles";
 import { sx } from "@/shared/components/DataTable/DataGridToolbar";
-import {
-  booleanFilter,
-  dateFilter,
-} from "@/shared/components/DataTable/DataGridFilters";
+import AddUser from "@/shared/components/Modals/AddUser";
+import AppDrawer from "@/shared/components/Layouts/AppDrawer";
+import DataGridPagination from "@/shared/components/DataTable/DataGridPagination";
+import PageNavigator from "@/shared/components/Layouts/PageNavigator";
 import {
   DataGridDelete,
   DataGridSwitch,
 } from "@/shared/components/DataTable/DataGridCustomElements";
-import useJWT from "@/hooks/useJWT";
+import {
+  DataGridSlotProps,
+  DataGridSlots,
+} from "@/shared/components/DataTable/DataGridSlots";
+import {
+  booleanFilter,
+  dateFilter,
+} from "@/shared/components/DataTable/DataGridFilters";
+
+// * Icons
 import { AiOutlineUnlock } from "react-icons/ai";
-import { green } from "@mui/material/colors";
-import { useConfirmStore } from "@/store";
-import AppDrawer from "@/shared/components/Layouts/AppDrawer";
-import { PageHeader } from "@toolpad/core/PageContainer";
-import PageNavigator from "@/shared/components/Layouts/PageNavigator";
+import { FaUsersCog } from "react-icons/fa";
+
+// * Server
+import serverProps from "./server";
+
+// * Constants
+const apiUrl = "users";
+
+//console.log(await serverProps());
 
 export default function Users() {
   // ? Refs
-
   const apiRef = useGridApiRef();
-  const apiUrl = "users";
   const permissions: { readWriteRoles: string[]; readWriteUsers: string[] } = {
     readWriteRoles: [],
     readWriteUsers: [],
   };
 
   // ? Hooks
+  const showConfirm = useConfirmStore((state) => state.alert);
   const { profile } = useJWT();
-
   const {
     initialState,
     columnVisibilityModel,
@@ -101,23 +101,21 @@ export default function Users() {
       right: ["isActive", "actions"],
     },
   });
-  const showConfirm = useConfirmStore((state) => state.alert);
 
   // ? States
-  //const [data, setData] = useState<GridValidRowModel>();
   const [isExporting, setIsExporting] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isManageUserRolesOpen, setIsManageUserRolesOpen] = useState(false);
 
   // ? Effects
-  useEffect(() => {
+  /* useEffect(() => {
     apiRef.current.restoreState({
       columns: {
         dimensions: initialState?.columns?.dimensions,
         orderedFields: initialState?.columns?.orderedFields,
       },
     });
-  });
+  }); */
 
   // ? Queries
   const { data, isLoading } = useQuery({
@@ -141,8 +139,16 @@ export default function Users() {
       <PageNavigator
         dataset={data?.dataset}
         count={data?.count}
-        name="User Management"
-        alt={`${data?.count !== 1 ? apiUrl : apiUrl.slice(0, -1)}`}
+        heading="User Management"
+        subheading={`${data?.count !== 1 ? apiUrl : apiUrl.slice(0, -1)}`}
+        canRefresh
+      />
+
+      <AddUser
+        roles={data?.roles}
+        isAddModalOpen={isAddModalOpen}
+        setIsAddModalOpen={setIsAddModalOpen}
+        handleGetData={handleGetData}
       />
 
       <Box sx={{ height: `calc(100vh - 190px)` }}>
