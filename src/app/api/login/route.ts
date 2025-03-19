@@ -3,16 +3,44 @@ import got from "got";
 
 // * Helpers
 import proxy from "@/helpers/effectProxy";
+import { NextRequest } from "next/server";
+import { iQueryOptions } from "@/types";
+
+type Users = {}[];
+
+/* {
+  limit: '20',
+  offset: '0',
+  view: 'display',
+  options: '{"sortModel":[{"field":"id","sort":"desc"}]}',
+  scope: 'users'
+} */
+
+type SearchParams = {
+  limit: string;
+  offset: string;
+  view: "display" | "export";
+  options: string;
+  scope: string;
+};
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const res = await got(
-    "https://jsonplaceholder.typicode.com/todos/1",
+  const searchParams = req.nextUrl.searchParams;
+  const { view } = <SearchParams>Object.fromEntries(searchParams.entries());
+
+  const dataset: Users = await got(
+    "https://650d8d1aa8b42265ec2c60ae.mockapi.io/users",
     proxy()
   ).json();
-  return Response.json(res);
+
+  if (view === "display")
+    return Response.json({ count: dataset.length, dataset });
+
+  if (view === "export")
+    return Response.json({ count: dataset.length, dataset });
 }
 
 export async function POST(request: Request) {

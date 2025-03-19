@@ -14,21 +14,19 @@ export default function DataGridPagination({
 }) {
   return (
     <Grid display="flex" justifyContent="center">
-      {data?.count >= 10 && (
-        <Pagination
-          variant="outlined"
-          count={Math.ceil(data?.count / paginationModel?.pageSize)}
-          page={Number(paginationModel?.page + 1)}
-          onChange={(e, page) =>
-            changePagination({
-              pageSize: paginationModel?.pageSize,
-              page: page - 1,
-            })
-          }
-          color="primary"
-          sx={{ mt: 1.5 }}
-        />
-      )}
+      <Pagination
+        variant="outlined"
+        count={Math.ceil(data?.count / paginationModel?.pageSize)}
+        page={Number(paginationModel?.page + 1)}
+        onChange={(e, page) =>
+          changePagination({
+            pageSize: paginationModel?.pageSize,
+            page: page - 1,
+          })
+        }
+        color="primary"
+        sx={{ mt: 1.5 }}
+      />
     </Grid>
   );
 }

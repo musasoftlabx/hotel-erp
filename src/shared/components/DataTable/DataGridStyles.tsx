@@ -5,7 +5,7 @@ export const DataGridStyles = (theme: {
 }) => ({
   borderTop: `1px solid ${theme.palette.grey}`,
   borderRadius: 5,
-  mx: 2,
+  mx: 0,
   overflow: "auto",
   [`.${gridClasses["cell--editable"]}`]: {
     background: "rgba(70, 189, 97, .1)",

@@ -11,6 +11,7 @@ import {
   GridColumnVisibilityModel,
   GridFilterModel,
   GridPaginationModel,
+  GridPinnedColumnFields,
   GridPinnedColumns,
   GridRowId,
   GridRowModel,
@@ -18,6 +19,8 @@ import {
   GridSortModel,
 } from "@mui/x-data-grid-pro";
 import { GridInitialStatePro } from "@mui/x-data-grid-pro/models/gridStatePro";
+
+//import { GridColDef, GridStateColDef } from '@mui/x-data-grid-pro/models/colDef/gridColDef';
 
 // * Store
 import { useSnackBarStore } from "@/store";
@@ -37,7 +40,7 @@ export default function useCustomDataGrid({
 }: {
   apiRef: React.MutableRefObject<GridApiPro>;
   apiUrl: string;
-  toPin?: { left: string[]; right?: string[] };
+  toPin: GridPinnedColumnFields;
   /**
    * This specifies the fields to hide from the datagrid view
    * @type {{ fieldA: boolean, fieldB: boolean, ... }}
@@ -58,7 +61,7 @@ export default function useCustomDataGrid({
   const [filterModel, setFilterModel] = useState<GridFilterModel>();
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>();
   const [pinnedColumnsModel, setPinnedColumnsModel] =
-    useState<GridPinnedColumns>();
+    useState<GridPinnedColumnFields>();
   const [rowSelectionModel, setRowSelectionModel] =
     useState<GridRowSelectionModel>([]);
   const [sortModel, setSortModel] = useState<GridSortModel>();
@@ -130,7 +133,7 @@ export default function useCustomDataGrid({
     localStorage.setItem(`____${apiUrl}_pagination`, JSON.stringify(model));
   };
 
-  const changePinnedColumns = (model: GridPinnedColumns) => {
+  const changePinnedColumns = (model: GridPinnedColumnFields) => {
     setPinnedColumnsModel(model);
     localStorage.setItem(`_${apiUrl}_pinned_columns`, JSON.stringify(model));
   };
@@ -152,13 +155,15 @@ export default function useCustomDataGrid({
 
   // ? Functions
   const handleGetData = () => {
-    queryClient.refetchQueries([
-      apiUrl,
-      paginationModel?.pageSize,
-      paginationModel?.page,
-      "display",
-      encodeURI(JSON.stringify({ filterModel, sortModel })),
-    ]);
+    queryClient.refetchQueries({
+      queryKey: [
+        apiUrl,
+        paginationModel?.pageSize,
+        paginationModel?.page,
+        "display",
+        encodeURI(JSON.stringify({ filterModel, sortModel })),
+      ],
+    });
   };
 
   const updateCell = ({ newRow, oldRow, url }: tUpdateCell) => {
@@ -195,8 +200,8 @@ export default function useCustomDataGrid({
   };
 
   // ? Mutations
-  const { mutate: updateData } = useMutation(
-    ({
+  const { mutate: updateData } = useMutation({
+    mutationFn: ({
       id,
       field,
       value,
@@ -206,8 +211,8 @@ export default function useCustomDataGrid({
       field?: string;
       value?: string | number | boolean;
       url: string;
-    }) => axios.patch(url, { id, field, value })
-  );
+    }) => axios.patch(url, { id, field, value }),
+  });
 
   return {
     initialState,

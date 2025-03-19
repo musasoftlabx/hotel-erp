@@ -6,7 +6,7 @@ import axios from "axios";
 // * Utils
 import hexToRGB from "./utils/hexToRGB";
 
-//import { devtools, persist } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 export const defaultPrimaryColor = "#45a65b";
 const defaultFont = "Futura";

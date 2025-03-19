@@ -31,7 +31,7 @@ import { TextFieldX } from "../InputFields/TextFieldX";
 //import Confirm from "@/components/Shared/Confirm";
 
 // * Store
-//import { useAlertStore, useConfirmStore, useSnackBarStore } from "@/store";
+import { useAlertStore, useConfirmStore, useSnackBarStore } from "@/store";
 
 // * Icons
 import {
@@ -45,6 +45,7 @@ import { MdAdd, MdSearch } from "react-icons/md";
 import { MdDeselect } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { SlRefresh } from "react-icons/sl";
+import Confirm from "../Dialogs/Confirm";
 
 export const sx = {
   borderRadius: 3,
@@ -141,16 +142,22 @@ export default function DataGridToolbar({
   const [multiRejectionReason, setMultiRejectionReason] = useState<string>();
 
   // ? Mutations
-  const { mutate: deleteData } = useMutation((body: GridRowSelectionModel) =>
-    axios.delete(`${apiUrl}`, { data: body })
-  );
-  const { mutate: resetPassword } = useMutation((body: GridRowSelectionModel) =>
-    axios.put(apiUrl, body)
-  );
-  const { mutate: multiAction } = useMutation(
-    (body: { action: string; ids: GridRowSelectionModel; feedback?: string }) =>
-      axios.put(apiUrl, body)
-  );
+  const { mutate: deleteData } = useMutation({
+    mutationFn: (body: GridRowSelectionModel) =>
+      axios.delete(`${apiUrl}`, { data: body }),
+  });
+
+  const { mutate: resetPassword } = useMutation({
+    mutationFn: (body: GridRowSelectionModel) => axios.put(apiUrl, body),
+  });
+
+  const { mutate: multiAction } = useMutation({
+    mutationFn: (body: {
+      action: string;
+      ids: GridRowSelectionModel;
+      feedback?: string;
+    }) => axios.put(apiUrl, body),
+  });
 
   // ? Constants
   const filters = apiRef.current.state.filter.filterModel.items;
@@ -632,7 +639,7 @@ export default function DataGridToolbar({
               borderColor:
                 theme.palette.mode === "light" ? "divider" : "action.disabled",
               height: 40,
-              mt: -1.2,
+              mt: 0,
               overflow: "hidden",
               width: search?.width ?? 260,
               ".MuiInputBase-root": { background: "transparent" },

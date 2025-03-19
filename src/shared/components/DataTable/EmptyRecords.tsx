@@ -1,5 +1,5 @@
 // * Next
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 // * MUI
@@ -23,13 +23,13 @@ const EmptyRecords = ({ entity }: { entity: string }) => {
         sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}
       >
         <Image
-          src="/images/404.png"
-          alt="404"
+          src="/images/illustrations/animated/no-records.gif"
+          alt="no-records"
           priority
           width={200}
           height={200}
         />
-        <Typography variant="h5" mt={2} sx={{ opacity: 0.8 }}>
+        <Typography variant="h6" sx={{ opacity: 0.8 }}>
           {entity} not found
         </Typography>
         <LoadingButton

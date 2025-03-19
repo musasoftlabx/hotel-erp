@@ -33,7 +33,8 @@ import { useMutation } from "@tanstack/react-query";
 import { yupUsername, yupPassword } from "@/utils/yupReusables";
 import { _login } from "./server/login";
 
-export default function Login({ theme }: { theme: ThemeOptions }) {
+//export default function Login({ theme }: { theme: ThemeOptions }) {
+export default function Login() {
   const schema = object({ username: yupUsername, password: yupPassword });
 
   const {
@@ -91,10 +92,10 @@ export default function Login({ theme }: { theme: ThemeOptions }) {
         alt="background"
         style={{
           height: "100vh",
-          filter:
-            theme?.palette?.mode === "light"
-              ? "invert(0) "
-              : "invert(1) hue-rotate(260deg)",
+          // filter:
+          //   theme?.palette?.mode === "light"
+          //     ? "invert(0) "
+          //     : "invert(1) hue-rotate(260deg)",
           objectFit: "cover",
           position: "fixed",
           width: "100vw",
@@ -102,7 +103,7 @@ export default function Login({ theme }: { theme: ThemeOptions }) {
         }}
       />
 
-      <FormControlLabel
+      {/* <FormControlLabel
         checked={theme?.palette?.mode === "dark" ? true : false}
         onChange={(e: any) => {
           const val = e.target.checked ? "dark" : "light";
@@ -112,7 +113,7 @@ export default function Login({ theme }: { theme: ThemeOptions }) {
         control={<SwitchX theme={theme} />}
         label=""
         sx={{ position: "fixed", top: 20, right: 10 }}
-      />
+      /> */}
 
       <Grid container minHeight="100vh">
         <Grid

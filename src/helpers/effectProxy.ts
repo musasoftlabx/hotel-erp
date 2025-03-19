@@ -7,6 +7,7 @@ export default function proxy() {
   if (workComputers.includes(os.hostname()))
     return {
       agent: { https: new HttpsProxyAgent({ proxy: "http://proxy2:8080" }) },
+      https: { rejectUnauthorized: false },
     };
   else return {};
 }
