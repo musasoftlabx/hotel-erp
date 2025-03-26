@@ -4,7 +4,7 @@ export const DataGridStyles = (theme: {
   palette: { grey: any; background: { paper: any } };
 }) => ({
   borderTop: `1px solid ${theme.palette.grey}`,
-  borderRadius: 5,
+  borderRadius: 3,
   mx: 0,
   overflow: "auto",
   [`.${gridClasses["cell--editable"]}`]: {
@@ -30,7 +30,11 @@ export const DataGridStyles = (theme: {
     top: 80,
     right: 15,
   },
+  [`.${gridClasses.columnHeaderTitle}`]: {
+    fontWeight: "bold",
+  },
   "& :not(.MuiDataGrid-cell--editable:focus)": {
     outline: "none",
   },
+  //".MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
 });

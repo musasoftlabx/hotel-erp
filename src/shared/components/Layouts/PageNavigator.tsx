@@ -60,10 +60,13 @@ export default function PageNavigator({
       <Fab
         size="medium"
         sx={(theme) => ({
-          border: theme.palette.mode === "light" ? "unset" : "1px solid #fff",
+          border:
+            theme.palette.mode === "light"
+              ? "1px solid #f5f5f5"
+              : "1px solid #fff",
           background:
             theme.palette.mode === "light"
-              ? "linear-gradient(145deg, #c4e0c1, #f0f0f0)"
+              ? "transparent"
               : //theme.palette.primary
                 "transparent",
           // boxShadow:
@@ -71,6 +74,7 @@ export default function PageNavigator({
           //     ? `6px 6px 12px #a8a8a8, -6px -6px 12px #ffffff`
           //     : "unset",
           //color: theme.palette.mode === "light" ? "#000" : "#fff",
+          ml: 0.5,
           mr: 2,
         })}
       >

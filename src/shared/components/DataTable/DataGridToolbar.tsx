@@ -15,11 +15,10 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid-pro";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Badge from "@mui/material/Badge";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Popover from "@mui/material/Popover";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
@@ -46,14 +45,17 @@ import { MdDeselect } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { SlRefresh } from "react-icons/sl";
 import Confirm from "../Dialogs/Confirm";
+import { ThemeOptions } from "@mui/material";
 
-export const sx = {
-  borderRadius: 3,
-  fontFamily: "Rubik",
-  px: { lg: 2, md: 3, sm: 2.5, xs: 3 },
-  textTransform: "capitalize",
-  whiteSpace: "nowrap",
-  ":hover": { background: green[500], color: "#fff" },
+export const sx = (theme: ThemeOptions) => {
+  //console.log("xxxxx", theme);
+  return {
+    borderRadius: 2,
+    px: { lg: 2, md: 3, sm: 2.5, xs: 3 },
+    textTransform: "capitalize",
+    whiteSpace: "nowrap",
+    ":hover": { background: theme.palette?.primary as string, color: "#fff" },
+  };
 };
 
 export const ExportTooltip = ({
@@ -292,6 +294,7 @@ export default function DataGridToolbar({
 
       <GridToolbarContainer
         sx={{
+          bgcolor: "action.selected",
           minHeight: rowSelection?.length > 0 ? "47px" : "20px !important",
           maxHeight: rowSelection?.length > 0 ? "47px" : "42px !important",
           overflowX: "scroll",
@@ -318,26 +321,32 @@ export default function DataGridToolbar({
           )}
 
           {/* // ? Refresh */}
-          <LoadingButton
+          <Button
             size="small"
-            startIcon={<SlRefresh />}
+            startIcon={<SlRefresh size={15} />}
             onClick={handleGetData}
             loading={isLoading}
             disabled={isLoading}
             sx={sx}
           >
             Refresh
-          </LoadingButton>
+          </Button>
 
           {/* // ? Filter */}
           {!exclude?.includes("filtering") && (
             <GridToolbarFilterButton
-              componentsProps={{
+              slotProps={{
                 button: {
                   variant: filters.length > 0 ? "contained" : "text",
+                  sx,
+                },
+                badge: {
+                  color: "warning",
+                  // badgeContent: (
+                  //   <Typography sx={{ color: "white" }}>{1}</Typography>
+                  // ),
                 },
               }}
-              sx={[sx, { "& .MuiBadge-badge": { bgcolor: "orange" } }]}
             />
           )}
 
@@ -554,12 +563,12 @@ export default function DataGridToolbar({
           {extraActions}
 
           {!exclude?.includes("columns") && (
-            <GridToolbarColumnsButton sx={sx} />
+            <GridToolbarColumnsButton slotProps={{ button: { sx } }} />
           )}
 
           {!exclude?.includes("exporting") && exportURL && (
             <ExportTooltip>
-              <LoadingButton
+              <Button
                 size="small"
                 startIcon={<BiExport />}
                 loading={isExporting}
@@ -586,7 +595,7 @@ export default function DataGridToolbar({
                 }}
               >
                 Export
-              </LoadingButton>
+              </Button>
             </ExportTooltip>
           )}
         </Stack>
@@ -595,7 +604,7 @@ export default function DataGridToolbar({
 
         {!exclude?.includes("resetDefaults") && exportURL && (
           <Tooltip title="This will reset page components such as pagination, sorting, filters, row selections.">
-            <LoadingButton
+            <Button
               size="small"
               startIcon={<BiReset />}
               loading={isExporting}
@@ -614,7 +623,7 @@ export default function DataGridToolbar({
               }}
             >
               Reset Defaults
-            </LoadingButton>
+            </Button>
           </Tooltip>
         )}
 
@@ -624,12 +633,14 @@ export default function DataGridToolbar({
             variant="filled"
             size="small"
             hiddenLabel
-            InputProps={{
-              disableUnderline: true,
-              startAdornment: <MdSearch size={25} opacity={0.7} />,
-              placeholder: search?.fields
-                ? `Search by (${search?.fields})`
-                : "Search...",
+            slotProps={{
+              input: {
+                disableUnderline: true,
+                startAdornment: <MdSearch size={25} opacity={0.7} />,
+                placeholder: search?.fields
+                  ? `Search by (${search?.fields})`
+                  : "Search...",
+              },
             }}
             sx={(theme) => ({
               background: "transparent",
@@ -638,6 +649,7 @@ export default function DataGridToolbar({
               borderStyle: "solid",
               borderColor:
                 theme.palette.mode === "light" ? "divider" : "action.disabled",
+              fontSize: 10,
               height: 40,
               mt: 0,
               overflow: "hidden",
