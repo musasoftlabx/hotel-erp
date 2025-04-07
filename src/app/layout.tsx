@@ -1,11 +1,14 @@
+// * Next
 import type { Metadata } from "next";
 
-//import "./globals.css";
-
-import { ThemeProvider } from "next-themes";
-
 // * NPM
-import QueryProvider from "@/shared/QueryProvider";
+import Main from "@/app/main";
+
+// * MUI
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
+
+// * CSS
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Hotel ERP",
@@ -23,11 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
       <body>
-        <>
-          <QueryProvider>{children}</QueryProvider>
-        </>
+        <InitColorSchemeScript attribute="class" />
+        <Main>{children}</Main>
       </body>
     </html>
   );

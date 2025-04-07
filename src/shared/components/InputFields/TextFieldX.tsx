@@ -3,6 +3,7 @@ import { forwardRef } from "react";
 
 // * MUI
 import { styled } from "@mui/material/styles";
+import type {} from "@mui/material/themeCssVarsAugmentation";
 import { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import Grid from "@mui/material/Grid2";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -127,48 +128,67 @@ const StyledTextField = styled(
     </Grid>
   ))
 )((props) => ({
-  "& :-webkit-autofill": { transitionDelay: "9999s" }, // ? Prevents MUI blue autofill background
-  "& .MuiFilledInput-root": {
-    border: `1px solid ${
-      props.theme.palette.mode === "light" ? "#e2e2e2" : "#666666"
-    }`,
-    overflow: "hidden",
-    borderRadius: props.circularedge || 6,
-    backgroundColor:
-      props.theme.palette.mode === "light"
-        ? // "rgba(0, 0, 0, 0.06)" //"rgba(232,240,254,0.95)"
-          "rgba(232, 240, 254, 0.95)" //"rgba(232,240,254,0.95)"
-        : "rgba(43, 43, 43, 0.95)",
-    transition: props.theme.transitions.create([
-      "border-color",
-      "background-color",
-      "box-shadow",
-    ]),
-    ":before": {
-      borderBottom: 0,
+  // ? Prevents MUI blue autofill background
+  "& :-webkit-autofill": { transitionDelay: "9999s" },
+  // ? Label if error
+  "label.Mui-error": [
+    ({ theme }: { theme: any }) => ({
+      color: theme.vars.palette.error.dark,
+    }),
+    ({ theme }: { theme: any }) =>
+      theme.applyStyles("dark", {
+        color: theme.vars.palette.error.light,
+      }),
+  ],
+  // ? Helper text
+  ".MuiFormHelperText-root": [
+    {
+      color: props.theme.vars.palette.error.dark,
+      fontSize: 11,
+      fontWeight: 600,
+      marginTop: 0.1,
+      marginRight: -1,
+      marginBottom: -14,
+      textAlign: "right",
     },
-    "&:hover": {
-      backgroundColor:
-        props.theme.palette.mode === "light"
-          ? "rgba(255, 255, 235, 0.95)"
-          : "rgba(43, 43, 43, 0.4)", //  : "rgba(0, 0, 0, 0.8)", "rgba(43, 43, 43, 0.4)",
-    },
-    "&.Mui-focused": {
-      backgroundColor:
-        props.theme.palette.mode === "light"
-          ? "rgba(231,234,246,0.9)"
-          : "rgba(0,0,0,0.8)",
-      borderBottom: `1px solid ${props.theme.palette.primary.main}`,
-    },
-    "&.Mui-error": {
-      backgroundColor:
-        props.theme.palette.mode === "light"
-          ? "rgba(255,248,248,0.9)"
-          : "rgba(43,43,43,0.4)",
-      outline: `2px dotted ${props.theme.palette.error.main}`,
-      border: "1px solid transparent",
-    },
-  },
+    ({ theme }: { theme: any }) =>
+      theme.applyStyles("dark", {
+        color: theme.vars.palette.error.light,
+      }),
+  ],
+  // ? Text input container
+  ".MuiFilledInput-root": [
+    ({ theme }: { theme: any }) => ({
+      backgroundColor: theme.vars.palette.grey[100],
+      border: `1px solid ${theme.vars.palette.grey[300]}`,
+      borderRadius: props.circularedge || 6,
+      ":before": { borderBottom: 0 },
+      ":after": { borderBottom: 0 },
+      ":hover": { backgroundColor: theme.vars.palette.grey[200] },
+      "&.Mui-error": {
+        backgroundColor: theme.vars.palette.error.main,
+        outline: `1px solid ${props.theme.vars.palette.error.dark}`, //ff548a
+        ":hover": { backgroundColor: theme.vars.palette.error.hover },
+        ".MuiInputAdornment-positionStart": {
+          color: theme.vars.palette.error.dark,
+        },
+        "input::placeholder": { color: theme.vars.palette.error.dark },
+      },
+    }),
+    ({ theme }: { theme: any }) =>
+      theme.applyStyles("dark", {
+        backgroundColor: "rgba(43, 43, 43, 0.95)",
+        border: `1px solid ${theme.vars.palette.action.disabledBackground}`,
+        ":hover": { backgroundColor: "rgba(43, 43, 43, 0.4)" },
+        "&.Mui-error": {
+          ".MuiInputAdornment-positionStart": {
+            color: theme.vars.palette.error.light,
+          },
+          "input::placeholder": { color: theme.vars.palette.error.light },
+        },
+      }),
+  ],
+  // ? Text input label
   ".MuiFormLabel-root": {
     fontSize: 14,
     top: 2,
@@ -181,26 +201,19 @@ const StyledTextField = styled(
       fontSize: props.select ? 14 : 16,
       opacity: props.select ? 1 : 0,
     },
+    // ? Transalted form label (Small one on the top when input has value)
+    "&.MuiFormLabel-filled": {
+      fontSize: 16,
+      opacity: 1,
+      transform: "translate(14px, 1px) scale(0.7)",
+    },
   },
-  ".MuiFormLabel-root.MuiFormLabel-filled": {
-    fontSize: 16,
-    opacity: 1,
-    transform: "translate(14px, 2px) scale(0.7)",
-  },
-  ".MuiFormHelperText-root": {
-    textAlign: "right",
-    fontWeight: 500,
-    lineHeight: 1.5,
-    marginBottom: -12,
-    marginRight: -1,
-    marginTop: 4,
-    opacity: 0.7,
-  },
+  // ? Remove bottom width on hover
   ".MuiInputBase-adornedStart": {
     ":before": { content: "unset" },
     ":after": { content: "unset" },
   },
-  ".MuiSelect-filled": { paddingTop: 18, paddingBottom: 8 },
+
   "&.MuiFormControl-root": {
     ".MuiInputBase-root:has(input:autofill)": {
       ".MuiInputBase-input": {
@@ -212,11 +225,12 @@ const StyledTextField = styled(
     ".MuiInputBase-root:has(:focus)": {
       ":has(.Mui-error)": {
         ".MuiInputAdornment-positionStart": {
-          color: props.theme.palette.error,
+          color: props.theme.vars.palette.error.light,
         },
-        "input::placeholder": { color: props.theme.palette.error },
+        "input::placeholder": { color: props.theme.vars.palette.error.light },
       },
       ":not(.Mui-error)": {
+        borderColor: props.theme.palette.primary.main,
         ".MuiInputAdornment-positionStart": {
           color: props.theme.palette.primary.main,
         },
@@ -224,7 +238,7 @@ const StyledTextField = styled(
       },
     },
     input: {
-      "&[value='']": { marginTop: -8, paddingBottom: 10 },
+      "&[value='']": { marginTop: -10.5, paddingBottom: 10 },
       "&:not([value=''])": { marginTop: -5, paddingBottom: 4 },
       "&:not([value])": { marginTop: -2.5 },
       "&:focus": {
@@ -232,26 +246,9 @@ const StyledTextField = styled(
         "::placeholder": {
           fontSize: 15,
           marginTop: "-18px !important",
-          //visibility: "visible",
+          opacity: 1,
         },
       },
-
-      // "&:autofill": {
-      //   //marginBottom: "-2px !important",
-      //   marginTop: "20px !important",
-      //   marginBottom: "10px !important",
-      //   //background: "transparent !important",
-      //   opacity: 0.5,
-      //   visibility: "visible",
-      // },
-      // "::placeholder": {
-      //   //marginBottom: "-2px !important",
-      //   marginTop: "20px !important",
-      //   marginBottom: "10px !important",
-      //   //background: "transparent !important",
-      //   opacity: 0.5,
-      //   visibility: "visible",
-      // },
       "&:not(focus)": {
         ":autofill, ::placeholder": {
           //marginBottom: "-2px !important",
@@ -272,6 +269,8 @@ const StyledTextField = styled(
       },
     },
   },
+  // ? Select container
+  ".MuiSelect-filled": { paddingTop: 16, paddingBottom: 6 },
 }));
 
 export const TextFieldX = (props: TExtendedProps) =>

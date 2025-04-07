@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 // * MUI
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { Box, Button, IconButton, Stack, useColorScheme } from "@mui/material";
 import { green } from "@mui/material/colors";
 import {
   DataGridPro,
@@ -133,6 +133,8 @@ export default function Users() {
     enabled: JSON.stringify({ filterModel, sortModel }) !== "{}",
     select: ({ data }) => data,
   });
+
+  const { mode, setMode } = useColorScheme();
 
   return (
     <AppDrawer>

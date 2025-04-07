@@ -1,3 +1,8 @@
+declare module "@mui/material/styles" {
+  interface PaletteOptions {
+    white: PaletteOptions["primary"];
+  }
+}
 export interface iQueryOptions {
   filterModel: {
     items: { field: string; operator: string; id: number; value: string }[];

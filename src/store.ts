@@ -378,6 +378,10 @@ export const useThemeStore = create<useThemeStore>((set) => ({
               ...state.theme.palette.primary,
               main: color,
             },
+            error: {
+              ...state.theme.palette.error,
+              light: "#9c27b0",
+            },
           },
           components: {
             ...state.theme.components,
@@ -468,6 +472,10 @@ export const useThemeStore = create<useThemeStore>((set) => ({
           primary: {
             ...state.theme.palette.primary,
             main: color,
+          },
+          error: {
+            ...state.theme.palette.error,
+            light: "#9c27b0",
           },
         },
         components: {

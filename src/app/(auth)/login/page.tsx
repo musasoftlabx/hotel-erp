@@ -6,7 +6,7 @@ import axios from "axios";
 
 import { SwitchX } from "@/shared/components/InputFields/SwitchX";
 import { TextFieldX } from "@/shared/components/InputFields/TextFieldX";
-import { ButtonX } from "@/shared/components/InputFields/ButtonX";
+import ButtonX from "@/shared/components/InputFields/ButtonX";
 
 import {
   Box,
@@ -32,6 +32,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { yupUsername, yupPassword } from "@/utils/yupReusables";
 import { _login } from "./server/login";
+import ThemeSwitcherX from "@/shared/components/InputFields/ThemeSwitcherX";
 
 //export default function Login({ theme }: { theme: ThemeOptions }) {
 export default function Login() {
@@ -80,12 +81,17 @@ export default function Login() {
 
   return (
     <Box
-      sx={(theme) => ({
-        background:
-          theme.palette.mode === "dark"
-            ? "linear-gradient(to left, rgba(216, 247, 195, .9) 0%, rgba(222, 236, 221, .9) 100%);"
-            : "linear-gradient(293deg, rgba(41, 179, 74, .9) 0%, rgba(0, 0, 0, .9) 70%);",
-      })}
+      sx={[
+        {
+          background:
+            "linear-gradient(293deg, rgba(41, 179, 74, .9) 0%, rgba(0, 0, 0, .9) 70%);",
+        },
+        (theme) =>
+          theme.applyStyles("dark", {
+            background:
+              "linear-gradient(to left, rgba(216, 247, 195, .9) 0%, rgba(222, 236, 221, .9) 100%);",
+          }),
+      ]}
     >
       <img
         src="/images/backdrops/backdrop-0.jpg"
@@ -102,6 +108,8 @@ export default function Login() {
           zIndex: -1,
         }}
       />
+
+      <ThemeSwitcherX />
 
       {/* <FormControlLabel
         checked={theme?.palette?.mode === "dark" ? true : false}
@@ -205,7 +213,6 @@ export default function Login() {
                   variant="contained"
                   placement="center"
                   size="large"
-                  fullwidth
                   disabled={!isValid || isSubmitting}
                   loading={isSubmitting}
                   loadingtext="LET'S GO..."

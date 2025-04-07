@@ -1,6 +1,8 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      NEXT_PUBLIC_API_ADMIN: string;
+
       FS_URL: string;
       REDIS_DB_HOST: string;
       REDIS_DB_PORT: number;

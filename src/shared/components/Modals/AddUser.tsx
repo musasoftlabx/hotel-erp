@@ -12,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 // * Components
-import { ButtonX } from "@/shared/components/InputFields/ButtonX";
+import ButtonX from "@/shared/components/InputFields/ButtonX";
 import { CloseButtonX } from "@/shared/components/InputFields/CloseButtonX";
 import { TextFieldX } from "@/shared/components/InputFields/TextFieldX";
 
@@ -31,7 +31,7 @@ import {
   PiTreeStructureLight,
 } from "react-icons/pi";
 import { RiAccountPinBoxLine, RiMailSendLine } from "react-icons/ri";
-import { VscMail } from "react-icons/vsc";
+import { IoIosAdd } from "react-icons/io";
 
 // * Store
 import { useAlertStore } from "@/store";
@@ -120,7 +120,7 @@ export default function AddUser({
               </Typography>
 
               <CloseButtonX
-                sx={{ mr: 3 }}
+                sx={{ mr: 1 }}
                 onClick={() => setIsAddModalOpen(false)}
               />
             </Stack>
@@ -291,15 +291,14 @@ export default function AddUser({
 
                 <ButtonX
                   variant="contained"
-                  placement="center"
-                  size="small"
-                  fullwidth
-                  dontScale
-                  //disabled={!isValid || isSubmitting}
-                  //loading={isSubmitting}
-                  loadingtext="LET'S GO..."
+                  placement="right"
+                  size="medium"
+                  disabled={!isValid || isSubmitting}
+                  loading={isSubmitting}
+                  loadingText="LOADING..."
                 >
                   ADD USER
+                  <IoIosAdd size={20} style={{ marginLeft: 2 }} />
                 </ButtonX>
               </form>
             </Box>
@@ -307,7 +306,7 @@ export default function AddUser({
         </motion.div>
       </Modal>
 
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 }

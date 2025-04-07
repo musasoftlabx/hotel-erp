@@ -1,3 +1,5 @@
+"use client";
+
 import { BiReset } from "react-icons/bi";
 // * React
 import { useState } from "react";

@@ -6,9 +6,7 @@ import Image from "next/image";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
-
-// * Components
-import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 
 const EmptyRecords = ({ entity }: { entity: string }) => {
   const router = useRouter();
@@ -32,13 +30,13 @@ const EmptyRecords = ({ entity }: { entity: string }) => {
         <Typography variant="h6" sx={{ opacity: 0.8 }}>
           {entity} not found
         </Typography>
-        <LoadingButton
+        <Button
           variant="contained"
           sx={{ borderRadius: 3, mt: 2 }}
           onClick={() => router.reload()}
         >
           RELOAD
-        </LoadingButton>
+        </Button>
       </Box>
     </Grid>
   );

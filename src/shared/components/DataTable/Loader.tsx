@@ -12,8 +12,9 @@ export default function Loader({ text }: { text: string }) {
   return (
     <Grid container alignItems="center" flexDirection="column">
       <Image
-        src={"/images/illustrations/animated/loading.gif"}
+        src="/images/illustrations/animated/loading.gif"
         alt="loading"
+        priority
         height={150}
         width={150}
       />

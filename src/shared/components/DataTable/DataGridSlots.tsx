@@ -1,3 +1,5 @@
+"use client";
+
 // * MUI
 import { GridApiPro, GridFilterModel } from "@mui/x-data-grid-pro";
 import { green, red } from "@mui/material/colors";
@@ -32,7 +34,7 @@ export type tDataGridSlots = {
     multiApprove?: string,
     multiReject?: string,
     multiDelete?: string,
-    deselectAll?: string
+    deselectAll?: string,
   ];
   exportURL?: string;
   extraActions?: React.ReactNode;
