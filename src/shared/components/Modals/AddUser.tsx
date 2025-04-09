@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import axios from "axios";
 
 // * MUI
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { InferType, boolean, object, string } from "yup";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
@@ -12,12 +15,13 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 // * Components
-import ButtonX from "@/shared/components/InputFields/ButtonX";
 import { CloseButtonX } from "@/shared/components/InputFields/CloseButtonX";
 import { TextFieldX } from "@/shared/components/InputFields/TextFieldX";
+import ButtonX from "@/shared/components/InputFields/ButtonX";
+import PhoneNumberX from "../InputFields/PhoneNumberX";
 
 // * Icons
-import { BsFillPhoneVibrateFill } from "react-icons/bs";
+import { BsFillPhoneVibrateFill, BsTextWrap } from "react-icons/bs";
 import { GoMail } from "react-icons/go";
 import {
   MdAccountCircle,
@@ -41,20 +45,18 @@ import ModalStyles from "@/shared/ModalStyles";
 
 // * Utils
 import { yupPhoneNumber, yupString } from "@/utils/yupReusables";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { InferType, object, string } from "yup";
-import { DevTool } from "@hookform/devtools";
-import PhoneNumberX from "../InputFields/PhoneNumberX";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 const schema = object({
   firstName: yupString,
-  description: string(),
   middleName: string(),
   lastName: yupString,
   emailAddress: string().email("Invalid email").max(50, "Max of 50 chars"),
   phoneNumber: yupPhoneNumber,
   role: yupString,
+  description: string(),
+  isValid: boolean(),
 });
 
 type AddUser = InferType<typeof schema>;
@@ -256,6 +258,7 @@ export default function AddUser({
                       select
                       {...register("role")}
                     >
+                      <MenuItem disabled>Select a role</MenuItem>
                       {roles?.map((role, key) => (
                         <MenuItem key={key} value={role}>
                           {role}
@@ -265,7 +268,7 @@ export default function AddUser({
                   )}
                 />
 
-                {/* <Controller
+                <Controller
                   name="description"
                   control={control}
                   render={({ field }) => (
@@ -277,17 +280,70 @@ export default function AddUser({
                         Boolean(errors.description?.message)
                       }
                       helperText={
-                        dirty.description && errors.description?.message
+                        dirty.description &&
+                        Boolean(errors.description?.message)
+                          ? errors.description?.message
+                          : " "
                       }
-                      prefixcon={<MdAccountCircle size={24} />}
+                      prefixcon={<BsTextWrap size={24} />}
                       columnspan={{ xs: 12 }}
-                      slotprops={{ htmlInput: { maxLength: 20 } }}
+                      slotprops={{ htmlInput: { maxLength: 100 } }}
+                      slots={{
+                        formHelperText: (a) => (
+                          <Typography
+                            variant="caption"
+                            fontSize={11}
+                            sx={{ color: "text.disabled", mt: 0.3, ml: 1 }}
+                          >
+                            {field.value &&
+                              field.value?.length > 0 &&
+                              `Chars: ${field.value?.length ?? 0} / 100`}
+                          </Typography>
+                        ),
+                      }}
                       multiline
                       rows={5}
                       {...register("description")}
                     />
                   )}
-                /> */}
+                />
+
+                <Controller
+                  name="isValid"
+                  control={control}
+                  render={({ field }) => {
+                    console.log(field);
+
+                    return (
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            {...field}
+                            checked={field.value?.isValid as boolean}
+                          />
+                        }
+                        label={
+                          <Stack mt={1}>
+                            <Typography variant="body1">
+                              Is Supplementary?
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              mt={0.5}
+                              sx={{ opacity: 0.7 }}
+                            >
+                              Supplementaries are allocations added within the
+                              month, (around the 22nd date). If the allocations
+                              are new, (beggining of month), leave this switch
+                              off to safely delete previous allocations.
+                            </Typography>
+                          </Stack>
+                        }
+                        sx={{ alignItems: "start", ml: 0.5 }}
+                      />
+                    );
+                  }}
+                />
 
                 <ButtonX
                   variant="contained"
@@ -295,10 +351,13 @@ export default function AddUser({
                   size="medium"
                   disabled={!isValid || isSubmitting}
                   loading={isSubmitting}
-                  loadingText="LOADING..."
+                  loadingtext="LOADING..."
                 >
                   ADD USER
-                  <IoIosAdd size={20} style={{ marginLeft: 2 }} />
+                  <IoIosAdd
+                    size={20}
+                    style={{ marginRight: -5, marginTop: -3 }}
+                  />
                 </ButtonX>
               </form>
             </Box>

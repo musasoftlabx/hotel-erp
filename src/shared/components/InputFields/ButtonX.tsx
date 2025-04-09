@@ -51,16 +51,19 @@ export default function ButtonX(props: ButtonX) {
             <CircularProgress size={20} color="inherit" />
           </Stack>
         }
-        sx={{
+        sx={(theme) => ({
           ...props.sx,
           borderRadius: 2,
-          borderWidth: 4,
-          boxShadow: "rgba(52, 117, 210, 0.3) 0px 30px 90px",
+          border: `2px solid ${theme.vars.palette.primary.dark}`,
+          padding: "3px 16px",
+          paddingTop: 0.55,
+          //boxShadow: "rgba(52, 117, 210, 0.3) 0px 30px 90px",
           ":hover": {
-            borderStyle: "double",
-            boxShadow: "rgba(2, 87, 210, 0.5) 0px 30px 90px",
+            border: `2px solid ${theme.vars.palette.primary.light}`,
+            //borderStyle: "double",
+            //boxShadow: "rgba(2, 87, 210, 0.5) 0px 30px 90px",
           },
-        }}
+        })}
       >
         {props.children}
       </Button>

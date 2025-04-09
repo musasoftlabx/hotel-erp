@@ -14,7 +14,8 @@ type useThemeStore = {
 };
 
 const defaultFont = "Rubik";
-const defaultPrimaryColor = "#45a65b";
+//const defaultPrimaryColor = "#45a65b";
+const defaultPrimaryColor = "#9c27b0";
 
 export const useThemeStore = create<useThemeStore>((set) => ({
   theme: {
@@ -23,24 +24,34 @@ export const useThemeStore = create<useThemeStore>((set) => ({
       dark: {
         //palette: { error: { main: "#4e021a", mainHover:'', light: "#4e021a", dark: "#fff" } },
         palette: {
-          primary: { main: defaultPrimaryColor },
+          primary: {
+            main: defaultPrimaryColor,
+            light: "lightgreen",
+            dark: "green",
+          },
           error: {
             main: "rgba(78, 2, 26, 1)",
             hover: "rgba(78, 2, 26, .5)",
-            light: "rgb(255, 121, 142)", //"#4e021a",
+            light: "#f54b81", //"rgb(255, 121, 142)", //"#4e021a",
             dark: "#000",
+            border: "#ff7ba5",
             darker: "rgb(125, 0, 40)",
           },
         },
       },
       light: {
         palette: {
-          primary: { main: defaultPrimaryColor },
+          primary: {
+            main: defaultPrimaryColor,
+            light: "lightgreen",
+            dark: "green",
+          },
           error: {
-            main: "rgb(255, 192, 192)",
-            hover: "rgb(255, 185, 185)",
+            main: "#ffd0db", //"rgb(255, 192, 192)",
+            hover: "#ffebf3",
             light: "#4e021a",
-            dark: "rgb(171, 0, 54)",
+            dark: "#ab0036", //"#ffd0db",
+            border: "#ff7ba5",
             darker: "rgb(125, 0, 40)",
           },
         },

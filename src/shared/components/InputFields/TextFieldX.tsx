@@ -2,7 +2,7 @@
 import { forwardRef } from "react";
 
 // * MUI
-import { styled } from "@mui/material/styles";
+import { styled, ThemeOptions } from "@mui/material/styles";
 import type {} from "@mui/material/themeCssVarsAugmentation";
 import { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import Grid from "@mui/material/Grid2";
@@ -15,6 +15,7 @@ import { useMask } from "@react-input/mask";
 // * Types
 type TExtendedProps = TextFieldProps & {
   children?: React.ReactNode;
+  theme: any;
   ref?: any;
   label: string;
   select?: boolean;
@@ -86,7 +87,7 @@ const StyledTextField = styled(
             ? {
                 MenuProps: {
                   sx: {
-                    top: props.error ? 3 : 1,
+                    top: props.error ? 3 : 2,
                     ".MuiMenu-paper": {
                       //width: "250px",
                       borderBottomLeftRadius: 15,
@@ -99,17 +100,19 @@ const StyledTextField = styled(
                     ".MuiMenuItem-root": {
                       fontSize: 14,
                       my: 0.4,
-                      "&:hover": {
+                      ":hover": (theme) => ({
                         ":not(.Mui-selected)": {
-                          background:
-                            "linear-gradient(60deg, rgb(48 220 10 / 30%) 0%, rgb(159 198 62 / 30%) 100%)",
+                          background: "#9c27b033", //`${theme.vars.palette.primary.main}80`,
+                          //background: `${theme.vars.palette.primary.main} / 33`,
+                          //background: `var(--mui-palette-primary-main-500)`,
+                          border: `1px solid ${theme.vars.palette.primary.main}`,
                           borderRadius: 2,
                           mx: 2,
                           transform: "scale(1.05)",
                           transition:
                             "background 0.5s ease-out, transform 0.3s ease-out",
                         },
-                      },
+                      }),
                     },
                     ".Mui-selected": {
                       background: "rgba(71, 101, 130, 0.3)",
@@ -143,7 +146,7 @@ const StyledTextField = styled(
   // ? Helper text
   ".MuiFormHelperText-root": [
     {
-      color: props.theme.vars.palette.error.dark,
+      color: "#ff7ba5", //props.theme.vars.palette.error.dark,
       fontSize: 11,
       fontWeight: 600,
       marginTop: 0.1,
@@ -167,7 +170,7 @@ const StyledTextField = styled(
       ":hover": { backgroundColor: theme.vars.palette.grey[200] },
       "&.Mui-error": {
         backgroundColor: theme.vars.palette.error.main,
-        outline: `1px solid ${props.theme.vars.palette.error.dark}`, //ff548a
+        outline: "1px solid #ff7ba5", //`1px solid ${props.theme.vars.palette.error.dark}`,
         ":hover": { backgroundColor: theme.vars.palette.error.hover },
         ".MuiInputAdornment-positionStart": {
           color: theme.vars.palette.error.dark,
@@ -181,6 +184,9 @@ const StyledTextField = styled(
         border: `1px solid ${theme.vars.palette.action.disabledBackground}`,
         ":hover": { backgroundColor: "rgba(43, 43, 43, 0.4)" },
         "&.Mui-error": {
+          backgroundColor: theme.vars.palette.error.main,
+          outline: `1px solid ${props.theme.vars.palette.error.light}`,
+          ":hover": { backgroundColor: theme.vars.palette.error.hover },
           ".MuiInputAdornment-positionStart": {
             color: theme.vars.palette.error.light,
           },
@@ -216,11 +222,9 @@ const StyledTextField = styled(
 
   "&.MuiFormControl-root": {
     ".MuiInputBase-root:has(input:autofill)": {
-      ".MuiInputBase-input": {
-        fontSize: "30px !important",
-        marginTop: "20px !important",
-      },
-      ".MuiInputAdornment-positionStart": { marginTop: "13px !important" },
+      paddingTop: 4,
+      color: props.theme.vars.palette.grey[900],
+      ".MuiInputAdornment-positionStart": { marginTop: "13px" },
     },
     ".MuiInputBase-root:has(:focus)": {
       ":has(.Mui-error)": {

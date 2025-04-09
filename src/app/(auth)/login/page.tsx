@@ -1,43 +1,42 @@
 "use client";
 
+// * React
 import { useEffect, useState } from "react";
 
+// * NPM
+import { Controller, useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
+import { InferType, object } from "yup";
+import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 
-import { SwitchX } from "@/shared/components/InputFields/SwitchX";
+// * MUI
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+
+// * Components
 import { TextFieldX } from "@/shared/components/InputFields/TextFieldX";
 import ButtonX from "@/shared/components/InputFields/ButtonX";
-
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  IconButton,
-  Stack,
-  ThemeOptions,
-  Typography,
-} from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-
-import { MdAccountCircle, MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { AiFillLock } from "react-icons/ai";
-
-import { DevTool } from "@hookform/devtools";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-import { InferType, object } from "yup";
-import { useMutation } from "@tanstack/react-query";
-
-import { yupUsername, yupPassword } from "@/utils/yupReusables";
-import { _login } from "./server/login";
 import ThemeSwitcherX from "@/shared/components/InputFields/ThemeSwitcherX";
 
-//export default function Login({ theme }: { theme: ThemeOptions }) {
-export default function Login() {
-  const schema = object({ username: yupUsername, password: yupPassword });
+// * Utils
+import { yupUsername, yupPassword } from "@/utils/yupReusables";
 
+// * Icons
+import { AiFillLock } from "react-icons/ai";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { RiAccountPinBoxLine } from "react-icons/ri";
+
+const schema = object({
+  username: yupUsername,
+  password: yupPassword,
+});
+
+type Login = InferType<typeof schema>;
+
+export default function Login() {
   const {
     register,
     control,
@@ -48,8 +47,6 @@ export default function Login() {
     mode: "onChange",
     resolver: yupResolver(schema),
   });
-
-  type Login = InferType<typeof schema>;
 
   // ? States
   const [showPassword, setShowPassword] = useState(true);
@@ -62,66 +59,50 @@ export default function Login() {
     mutationFn: (body: Login) => axios.post("login", body),
   });
 
-  // {
-  //   isDirty: 'all',
-  //   dirtyFields: 'all',
-  //   validatingFields: 'all',
-  //   touchedFields: 'all',
-  //   isValidating: 'all',
-  //   isValid: 'all',
-  //   errors: 'all',
-  //   defaultValues: 'all',
-  //   isLoading: 'all',
-  //   isSubmitted: 'all',
-  //   isSubmitting: 'all',
-  //   isSubmitSuccessful: 'all',
-  //   submitCount: 'all',
-  //   disabled: 'all'
-  // }
-
   return (
     <Box
       sx={[
         {
           background:
-            "linear-gradient(293deg, rgba(41, 179, 74, .9) 0%, rgba(0, 0, 0, .9) 70%);",
+            "linear-gradient(to left, rgba(216, 247, 195, .9) 0%, rgba(222, 236, 221, .9) 100%);",
         },
         (theme) =>
           theme.applyStyles("dark", {
             background:
-              "linear-gradient(to left, rgba(216, 247, 195, .9) 0%, rgba(222, 236, 221, .9) 100%);",
+              "linear-gradient(293deg, rgba(41, 179, 74, .9) 0%, rgba(0, 0, 0, .9) 70%);",
           }),
       ]}
     >
-      <img
-        src="/images/backdrops/backdrop-0.jpg"
-        alt="background"
-        style={{
-          height: "100vh",
-          // filter:
-          //   theme?.palette?.mode === "light"
-          //     ? "invert(0) "
-          //     : "invert(1) hue-rotate(260deg)",
-          objectFit: "cover",
-          position: "fixed",
-          width: "100vw",
-          zIndex: -1,
-        }}
-      />
+      <Box
+        sx={[
+          {
+            filter: "invert(0)",
+            height: "100vh",
+            objectFit: "cover",
+            position: "fixed",
+            width: "100vw",
+            zIndex: -1,
+          },
+          (theme) =>
+            theme.applyStyles("dark", {
+              filter: "invert(1) hue-rotate(260deg)",
+            }),
+        ]}
+      >
+        <img
+          src="/images/backdrops/backdrop-0.jpg"
+          alt="background"
+          style={{
+            height: "100vh",
+            objectFit: "cover",
+            position: "fixed",
+            width: "100vw",
+            zIndex: -1,
+          }}
+        />
+      </Box>
 
       <ThemeSwitcherX />
-
-      {/* <FormControlLabel
-        checked={theme?.palette?.mode === "dark" ? true : false}
-        onChange={(e: any) => {
-          const val = e.target.checked ? "dark" : "light";
-          //setTheme(val);
-          localStorage.setItem("theme", val);
-        }}
-        control={<SwitchX theme={theme} />}
-        label=""
-        sx={{ position: "fixed", top: 20, right: 10 }}
-      /> */}
 
       <Grid container minHeight="100vh">
         <Grid
@@ -148,65 +129,101 @@ export default function Login() {
             <Stack
               alignItems="center"
               borderRadius={10}
-              py={4}
+              pt={5}
+              pb={3}
               px={3}
-              sx={{
-                background: "rgba(255, 255, 255, 0.1)",
-                boxShadow:
-                  "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
-              }}
+              sx={[
+                {
+                  background: "rgba(255, 255, 255, 0.5)",
+                  boxShadow:
+                    "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
+                },
+                (theme) =>
+                  theme.applyStyles("dark", {
+                    background: "rgba(255, 255, 255, 0.1)",
+                  }),
+              ]}
             >
+              <img
+                src="/images/logo.webp"
+                alt="logo"
+                style={{ height: 150, width: 150 }}
+              />
+
               <Typography
                 color="primary"
-                fontFamily="Montez"
-                fontSize={40}
+                fontFamily="Abel"
+                fontSize={38}
                 fontWeight={400}
                 textAlign="center"
               >
                 Palace Instanbul
               </Typography>
 
-              <Typography variant="subtitle1" mx={4} mb={1}>
+              <Typography variant="subtitle2" mx={4} mb={1}>
                 Please enter your username and password
               </Typography>
 
               <form
-                //onSubmit={handleSubmit(_login)}
-                onSubmit={handleSubmit((data: Login) =>
-                  login(data, {
-                    onSuccess(data, variables, context) {
+                onSubmit={handleSubmit((formdata: Login) =>
+                  login(formdata, {
+                    onSuccess: ({ data }) => {
                       console.log(data);
                     },
                   })
                 )}
               >
-                <TextFieldX
-                  label="Username *"
-                  placeholder="Enter username"
-                  error={dirty.username && Boolean(errors.username?.message)}
-                  helperText={dirty.username && errors.username?.message}
-                  prefixcon={<MdAccountCircle size={24} />}
-                  {...register("username")}
+                <Controller
+                  name="username"
+                  control={control}
+                  render={({ field }) => (
+                    <TextFieldX
+                      {...field}
+                      label="Username *"
+                      error={
+                        dirty.username && Boolean(errors.username?.message)
+                      }
+                      helperText={dirty.username && errors.username?.message}
+                      prefixcon={<RiAccountPinBoxLine size={24} />}
+                      columnspan={{ xs: 12 }}
+                      slotprops={{ htmlInput: { maxLength: 20 } }}
+                      {...register("username")}
+                    />
+                  )}
                 />
 
-                <TextFieldX
-                  type={showPassword ? "password" : "text"}
-                  label="Password *"
-                  placeholder="Enter password"
-                  error={dirty.password && Boolean(errors.password?.message)}
-                  helperText={dirty.password && errors.password?.message}
-                  prefixcon={<AiFillLock size={24} />}
-                  suffixcon={
-                    <IconButton
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      onMouseDown={(event) => event.preventDefault()}
-                      edge="end"
-                      sx={{ color: errors.password ? "#d3302f" : "" }}
-                    >
-                      {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
-                    </IconButton>
-                  }
-                  {...register("password")}
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <TextFieldX
+                      {...field}
+                      type={showPassword ? "password" : "text"}
+                      label="Password *"
+                      error={
+                        dirty.password && Boolean(errors.password?.message)
+                      }
+                      helperText={dirty.password && errors.password?.message}
+                      prefixcon={<AiFillLock size={24} />}
+                      suffixcon={
+                        <IconButton
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          onMouseDown={(event) => event.preventDefault()}
+                          edge="end"
+                          sx={{ color: errors.password ? "#d3302f" : "" }}
+                        >
+                          {showPassword ? (
+                            <MdVisibility />
+                          ) : (
+                            <MdVisibilityOff />
+                          )}
+                        </IconButton>
+                      }
+                      columnspan={{ xs: 12 }}
+                      slotprops={{ htmlInput: { maxLength: 20 } }}
+                      {...register("password")}
+                    />
+                  )}
                 />
 
                 <ButtonX
