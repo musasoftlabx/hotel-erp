@@ -138,23 +138,22 @@ export default function Users() {
 
   return (
     <AppDrawer>
-      <div>ihu</div>
-      {/* <PageNavigator
+      <PageNavigator
         dataset={data?.dataset}
         count={data?.count}
         heading="User Management"
         subheading={`${data?.count !== 1 ? apiUrl : apiUrl.slice(0, -1)}`}
         canRefresh
-      /> */}
+      />
 
-      {/* <AddUser
+      <AddUser
         roles={data?.roles}
         isAddModalOpen={isAddModalOpen}
         setIsAddModalOpen={setIsAddModalOpen}
         handleGetData={handleGetData}
-      /> */}
+      />
 
-      {/* <Box sx={{ height: `calc(100vh - 190px)` }}>
+      <Box sx={{ height: `calc(100vh - 190px)` }}>
         <DataGridPro
           apiRef={apiRef}
           rows={data?.dataset ?? []}
@@ -476,7 +475,7 @@ export default function Users() {
           paginationModel={paginationModel!}
           changePagination={changePagination}
         />
-      </Box> */}
+      </Box>
     </AppDrawer>
   );
 }
